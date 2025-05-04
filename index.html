@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>工商规范二维码生成</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #qrcode {
+            margin-top: 20px;
+        }
+    </style>
+    <!-- 引入 qrcode.min.js 文件 -->
+    <script src="qrcode.min.js"></script>
+</head>
+
+<body>
+    <input type="text" id="code" placeholder="输入18位统一社会信用代码" required>
+    <button onclick="generate()">生成规范二维码</button>
+    <div id="qrcode"></div>
+
+    <script>
+        function generate() {
+            const code = document.getElementById('code').value.trim();
+            if (!/^[0-9A-HJ-NP-RT-UW-Z]{18}$/.test(code)) {
+                alert('请输入18位有效统一社会信用代码！');
+                return;
+            }
+            const url = `http://www.gsxt.gov.cn/index.html?uniscid=${code}`;
+
+            const container = document.getElementById('qrcode');
+            while (container.firstChild) container.removeChild(container.firstChild);
+
+            new QRCode(container, {
+                text: url,
+                width: 200,
+                height: 200,
+                colorDark: '#000',
+                colorLight: '#fff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    </script>
+</body>
+
+</html>
