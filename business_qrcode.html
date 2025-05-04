@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>工商规范二维码生成</title>
+</head>
+<body>
+    <input type="text" id="code" placeholder="输入18位统一社会信用代码" required>
+    <button onclick="generate()">生成规范二维码</button>
+    <div id="qrcode" style="margin-top: 20px;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/dist/qrcode.min.js"></script>
+    <script>
+        function generate() {
+            const code = document.getElementById('code').value.trim();
+            // 统一社会信用代码格式校验（18位，数字+字母）
+            if (!/^[0-9A-HJ-NP-RT-UW-Z]{18}$/.test(code)) {
+                alert('请输入18位有效统一社会信用代码！');
+                return;
+            }
+            const url = `http://www.gsxt.gov.cn/index.html?uniscid=${code}`;
+            
+            // 清除旧二维码
+            const container = document.getElementById('qrcode');
+            while (container.firstChild) container.removeChild(container.firstChild);
+            
+            // 生成规范二维码（严格黑白，H级纠错）
+            new QRCode(container, {
+                text: url,
+                width: 200,  // 标准尺寸（可根据需要调整，建议200-400像素）
+                height: 200,
+                colorDark: '#000',  // 纯黑色模块
+                colorLight: '#fff', // 纯白色背景
+                correctLevel: QRCode.CorrectLevel.H  // 最高纠错级别（30%容错）
+            });
+        }
+    </script>
+</body>
+</html>
